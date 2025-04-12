@@ -7,10 +7,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.demo.model.Summary;
+import com.example.demo.repository.SummaryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.*;
 
 @RestController
 public class SummaryController {
+    
+    @Autowired
+    private SummaryRepository summaryRepository;
 
     static class SummaryRequest {
         public String url;
@@ -36,9 +43,12 @@ public class SummaryController {
 
     @PostMapping("/summarize")
     public SummaryResponse summarize(@RequestBody SummaryRequest request) {
-        String summary = callPythonSummarizer(request.url);
-        history.add(new HistoryEntry(request.url, summary));
-        return new SummaryResponse(summary);
+        String summaryText = callPythonSummarizer(request.url);
+
+        Summary summary = new Summary(request.url, summaryText);
+        summaryRepository.save(summary);
+
+        return new SummaryResponse(summaryText);
     }
 
     private String callPythonSummarizer(String text) {
@@ -62,8 +72,8 @@ public class SummaryController {
     }
 
     @GetMapping("/history")
-    public List<HistoryEntry> getHistory() {
-        return history;
+    public List<Summary> getHistory() {
+        return summaryRepository.findAll();
     }
 
     @GetMapping("/ping")
