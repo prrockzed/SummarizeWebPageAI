@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { fetchSummaryHistory } from '../api';
 
+interface HistoryEntry {
+  url: string;
+  summary: string;
+  createdAt: string;
+}
+
 const HistoryPage: React.FC = () => {
-  const [history, setHistory] = useState<any[]>([]);
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadHistory = async () => {
       try {
         const data = await fetchSummaryHistory();
-        setHistory(data || []);
+        
+        const sortedData = [...(data || [])].sort((a, b) => {
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        });
+        
+        setHistory(sortedData);
       } catch (error) {
         console.error('Error loading history:', error);
       } finally {
@@ -39,6 +50,9 @@ const HistoryPage: React.FC = () => {
             <li key={idx} className="history-item">
               <h3 className="history-item-title">URL: {entry.url}</h3>
               <p><strong>Summary:</strong> {entry.summary}</p>
+              <p className="history-item-date">
+                <small>Created: {new Date(entry.createdAt).toLocaleString()}</small>
+              </p>
             </li>
           ))}
         </ul>
