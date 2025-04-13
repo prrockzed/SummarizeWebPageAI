@@ -1,5 +1,6 @@
 plugins {
     id 'scala'
+    id 'java-library'
 }
 
 group = 'com.example'
@@ -14,14 +15,21 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.7.1'
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 jar {
     manifest {
         attributes(
-            'Implementation-Title': 'ScalaLogger',
+            'Implementation-Title': 'ScalaLib',
             'Implementation-Version': version
         )
     }
 
-    archiveBaseName.set("scala-logger")
-    archiveVersion.set("1.0")
+    archiveBaseName.set("scala-lib")
+    archiveVersion.set("")
 }
+
