@@ -45,15 +45,12 @@ public class SummaryController {
 
     @PostMapping("/summarize")
     public SummaryResponse summarize(@RequestBody SummaryRequest request) {
-        String cleaned = TextCleaner.cleanText(request.url);
-        String summaryText = callPythonSummarizer(cleaned);
+        String summaryText = callPythonSummarizer(request.url);
+        String cleanedSummary = TextCleaner.cleanText(summaryText);
 
-        Summary summary = new Summary(request.url, summaryText);
-        summaryRepository.save(summary);
+        DBLogger.logSummary(request.url, cleanedSummary);
 
-        DBLogger.logSummary(cleaned, summaryText);
-
-        return new SummaryResponse(summaryText);
+        return new SummaryResponse(cleanedSummary);
     }
 
     private String callPythonSummarizer(String text) {
