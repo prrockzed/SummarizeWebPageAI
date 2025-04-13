@@ -10,6 +10,8 @@ import org.springframework.web.client.RestTemplate;
 import com.example.demo.model.Summary;
 import com.example.demo.repository.SummaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.example.utils.TextCleaner;
+import com.example.utils.DBLogger;
 
 import java.util.*;
 
@@ -43,6 +45,12 @@ public class SummaryController {
 
     @PostMapping("/summarize")
     public SummaryResponse summarize(@RequestBody SummaryRequest request) {
+        // Temporary test
+        System.out.println("Before Scala call");
+        String cleaned = TextCleaner.cleanText("Check Scala@123!");
+        System.out.println("After Scala call: " + cleaned);
+        // DBLogger.logSummary("https://example.com", "This is a test summary.");
+
         String summaryText = callPythonSummarizer(request.url);
 
         Summary summary = new Summary(request.url, summaryText);
@@ -75,6 +83,11 @@ public class SummaryController {
     public List<Summary> getHistory() {
         return summaryRepository.findAll();
     }
+
+    // @GetMapping("/history")
+    // public List<Summary> getHistory() {
+    //     return summaryRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+    // }
 
     @GetMapping("/ping")
     public String ping() {
