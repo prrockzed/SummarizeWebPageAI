@@ -145,6 +145,38 @@ SELECT * FROM summary;
 
 ---
 
+## 📦 Dockerize
+
+### 1️⃣ React Dockerization
+
+```bash
+cd react-frontend
+docker build -t frontend-image .
+docker run --name frontend-container-1 -d -p 4173:4173 frontend-image
+```
+
+Runs on: `http://localhost:4173`
+
+### 2️⃣ Java Spring Boot Backend
+
+```bash
+cd java-backend
+```
+
+Runs on: `http://localhost:8080`
+
+### 3️⃣ Python Dockerization
+
+```bash
+cd python-fastapi
+docker build -t fastapi-image .
+docker run --env-file .env -p 8000:8000 --name fastapi-container-1 -d fastapi-image
+```
+
+Runs on: `http://localhost:8000`
+
+---
+
 ## 💡 How It Works
 
 1. Open `http://localhost:5173`
