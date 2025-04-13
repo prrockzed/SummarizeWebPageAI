@@ -1,0 +1,27 @@
+plugins {
+    id 'scala'
+}
+
+group = 'com.example'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.scala-lang:scala-library:2.13.12'
+    implementation 'org.postgresql:postgresql:42.7.1'
+}
+
+jar {
+    manifest {
+        attributes(
+            'Implementation-Title': 'ScalaLogger',
+            'Implementation-Version': version
+        )
+    }
+
+    archiveBaseName.set("scala-logger")
+    archiveVersion.set("1.0")
+}
