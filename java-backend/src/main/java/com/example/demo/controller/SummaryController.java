@@ -45,16 +45,13 @@ public class SummaryController {
 
     @PostMapping("/summarize")
     public SummaryResponse summarize(@RequestBody SummaryRequest request) {
-        // Temporary test
-        System.out.println("Before Scala call");
-        String cleaned = TextCleaner.cleanText("Check Scala@123!");
-        System.out.println("After Scala call: " + cleaned);
-        // DBLogger.logSummary("https://example.com", "This is a test summary.");
-
-        String summaryText = callPythonSummarizer(request.url);
+        String cleaned = TextCleaner.cleanText(request.url);
+        String summaryText = callPythonSummarizer(cleaned);
 
         Summary summary = new Summary(request.url, summaryText);
         summaryRepository.save(summary);
+
+        DBLogger.logSummary(cleaned, summaryText);
 
         return new SummaryResponse(summaryText);
     }
