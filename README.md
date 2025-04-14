@@ -157,23 +157,47 @@ docker run --name frontend-container-1 -d -p 4173:4173 frontend-image
 
 Runs on: `http://localhost:4173`
 
-### 2️⃣ Java Spring Boot Backend
+### Note: Create Docker Network
 
 ```bash
-cd java-backend
+docker network create backend-network
 ```
 
-Runs on: `http://localhost:8080`
-
-### 3️⃣ Python Dockerization
+### 2️⃣ Python Dockerization
 
 ```bash
 cd python-fastapi
 docker build -t fastapi-image .
-docker run --env-file .env -p 8000:8000 --name fastapi-container-1 -d fastapi-image
+docker run \
+  --env-file .env \
+  --network backend-network \
+  -p 8000:8000 \
+  --name fastapi-container-1 \
+  -d fastapi-image
 ```
 
 Runs on: `http://localhost:8000`
+
+### 3️⃣ Java Spring Boot Backend
+
+```bash
+cd java-backend
+docker build -t backend-image .
+docker run \
+  --name backend-container-1 \
+  --network backend-network \
+  -p 8080:8080 \
+  -e SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/web_summarizer \
+  -e SPRING_DATASOURCE_USERNAME=postgres \
+  -e SPRING_DATASOURCE_PASSWORD=postgres \
+  -e FASTAPI_URL=http://fastapi-container-1:8000/summarize \
+  -e DB_URL=jdbc:postgresql://host.docker.internal:5432/web_summarizer \
+  -e DB_USER=postgres \
+  -e DB_PASSWORD=postgres \
+  -d backend-image
+```
+
+Runs on: `http://localhost:8080`
 
 ---
 
@@ -205,7 +229,7 @@ Runs on: `http://localhost:8000`
 - [x] Scala Library for DB access
 - [x] Python FastAPI + Gemini
 - [x] PostgreSQL Integration
-- [ ] Dockerization
+- [x] Dockerization
 - [ ] Helm + Kubernetes Deployment
 
 ---

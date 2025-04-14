@@ -14,6 +14,8 @@ COPY src ./src
 # Copy libs (where scala-lib.jar is located)
 COPY libs ./libs
 
+COPY src/main/resources/application.properties ./src/main/resources/
+
 # Make Gradle wrapper executable
 RUN chmod +x gradlew
 

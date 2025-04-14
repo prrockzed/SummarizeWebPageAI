@@ -56,7 +56,10 @@ public class SummaryController {
     private String callPythonSummarizer(String text) {
         try {
             RestTemplate restTemplate = new RestTemplate();
-            String url = "http://localhost:8000/summarize";
+            String url = System.getenv("FASTAPI_URL");
+            if (url == null || url.isEmpty()) {
+                url = "http://localhost:8000/summarize"; // fallback (optional)
+            }
 
             Map<String, String> requestBody = new HashMap<>();
             requestBody.put("text", text);

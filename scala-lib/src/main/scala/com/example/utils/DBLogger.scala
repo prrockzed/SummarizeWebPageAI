@@ -4,9 +4,9 @@ import java.sql.{Connection, DriverManager, PreparedStatement, Timestamp}
 import java.time.LocalDateTime
 
 object DBLogger {
-  val dbUrl = "jdbc:postgresql://localhost:5432/web_summarizer"
-  val dbUser = "postgres"
-  val dbPassword = "postgres"
+  private val dbUrl = sys.env.getOrElse("DB_URL", "jdbc:postgresql://localhost:5432/web_summarizer")
+  private val dbUser = sys.env.getOrElse("DB_USER", "postgres")
+  private val dbPassword = sys.env.getOrElse("DB_PASSWORD", "postgres")
 
   def logSummary(url: String, summary: String): Unit = {
     val conn: Connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword)
