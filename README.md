@@ -13,7 +13,7 @@ A full-stack microservices-based web app that summarizes any public website usin
 | Library      | Scala (Gradle-based)           |
 | AI Service   | Python FastAPI + Gemini API    |
 | Database     | PostgreSQL                     |
-| Deployment   | Docker + Kubernetes + Helm     |
+| Deployment   | Docker                         |
 
 ---
 
@@ -49,8 +49,6 @@ Make sure you have the following installed:
 - **Python 3.9+ & pip**
 - **PostgreSQL**
 - **Docker** (for containerization)
-- **Minikube** or **Kubernetes CLI**
-- **Helm**
 
 ---
 
@@ -201,6 +199,16 @@ Runs on: `http://localhost:8080`
 
 ---
 
+# 📑 Docker Compose
+
+Rather than dockerizing react-frontend, java-backend, python-fastapi separately, run the following command once to use the service directly.
+
+```bash
+docker-compose up --build
+```
+
+---
+
 ## 💡 How It Works
 
 1. Open `http://localhost:5173`
@@ -212,16 +220,6 @@ Runs on: `http://localhost:8080`
 
 ---
 
-## 📦 Kubernetes Deployment (Coming Soon)
-
-- Dockerize all services
-- Deploy using Helm Charts
-- Run on Minikube or Kubernetes cluster
-
-> Dockerfiles and Helm charts will be added in future commits.
-
----
-
 ## ✅ Features Completed
 
 - [x] React Frontend
@@ -230,7 +228,6 @@ Runs on: `http://localhost:8080`
 - [x] Python FastAPI + Gemini
 - [x] PostgreSQL Integration
 - [x] Dockerization
-- [ ] Helm + Kubernetes Deployment
 
 ---
 
